@@ -1,10 +1,10 @@
 // ft-unicamp-si201
 
-//Códigos desenvolvidos na disciplina Estrutura de Dados I com muito sofrimento, pouca alegria
-//e muita força de vontade, mas pensa em muita força de vontade.
-//Todo meu desempenho estará nesse repositório
+//Códigos desenvolvidos na disciplina Estrutura de Dados I com muito sofrimento, pouca alegria\
+//e muita força de vontade, mas pensa em muita força de vontade.\
+//Todo meu desempenho estará nesse repositório\
 
-//May the force be with you
+//May the force be with you\
 
                 c==o
               _/____\_
