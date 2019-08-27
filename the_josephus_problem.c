@@ -58,7 +58,7 @@ int main(){
         i++;
     }
 
-    //Generating a random number in order choose a random soldier
+    //Generating a random number in order choose a soldier
     //to start counting
     srand(time(NULL));
     chosen = rand() % nameCont;
