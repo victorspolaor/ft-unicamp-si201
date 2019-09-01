@@ -5,10 +5,10 @@
 #include <locale.h>
 #include <time.h>
 
-#define tempoSimulacao  100
-#define probChegada     0.3
-#define tempoAtendMin   5
-#define tempoAtendMax   20
+#define simulationTime  100
+#define arriveProb     0.3
+#define timeAtendMin   5
+#define timeAtendMax   20
 
 typedef struct Client{
    int clientNumber;
@@ -61,10 +61,10 @@ int main() {
     exeSimulation(&data);
 
     printf("\n");
-    printf("Resultados da simulacao:\n\n");
-    printf("    Numero de consumidores atendidos: %d\n", data.attendedNumber);
-    printf("    Tempo medio de espera: %.2f\n", (double) data.waitTimeSum / data.attendedNumber);
-    printf("    Tamanho medio da fila: %.2f\n", (double) data.sizeSum / tempoSimulacao);
+    printf("Simulation result:\n\n");
+    printf("    Number of clients served: %d\n", data.attendedNumber);
+    printf("    Average waiting time: %.2f\n", (double) data.waitTimeSum / data.attendedNumber);
+    printf("    Average queue size: %.2f\n", (double) data.sizeSum / simulationTime);
 
     return 0;
 }
@@ -151,13 +151,13 @@ void exeSimulation(simulationData *dataBase){
 
     dataBase->queue = NewQueue();
     dataBase->activeClient = NULL;
-    dataBase->numberOfClients = 0; // Roberts esqueceu?
+    dataBase->numberOfClients = 0;
     dataBase->attendedNumber = 0;
     dataBase->waitTimeSum = 0;
     dataBase->sizeSum = 0;
 
-    for (dataBase->time = 0; dataBase->time < tempoSimulacao; dataBase->time++) {
-        if (RandomChance(probChegada, 0, 1)){
+    for (dataBase->time = 0; dataBase->time < simulationTime; dataBase->time++) {
+        if (RandomChance(arriveProb, 0, 1)){
             Client *client;
             dataBase->numberOfClients++;
 
@@ -168,11 +168,11 @@ void exeSimulation(simulationData *dataBase){
 
             probResult = (double) rand() / ((double) RAND_MAX + 1);
 
-            client->attendanceTime = tempoAtendMin + (probResult * (tempoAtendMax - tempoAtendMin + 1));
+            client->attendanceTime = timeAtendMin + (probResult * (timeAtendMax - timeAtendMin + 1));
 
             Enqueue(dataBase->queue, client);
 
-            printf("%4d: Cliente %d entra na fila\n", dataBase->time, dataBase->numberOfClients);
+            printf("%4d: Client %d get in queue \n", dataBase->time, dataBase->numberOfClients);
         }
 
         processQueue(dataBase);
@@ -191,14 +191,14 @@ void processQueue(simulationData *dataBase){
             dataBase->attendedNumber++;
             dataBase->waitTimeSum += (dataBase->time - client->arrivalInstant);
 
-            printf("%4d: Cliente %d chega ao caixa\n",
+            printf("%4d: Client %d arrives at checkout\n",
 
             dataBase->time, client->clientNumber);
         }
     }
     else{
         if (dataBase->activeClient->attendanceTime == 0){
-            printf( "%4d: Cliente %d deixa o caixa\n", dataBase->time, dataBase->activeClient->clientNumber);
+            printf( "%4d: Client %d leaves checkout\n", dataBase->time, dataBase->activeClient->clientNumber);
 
             free(dataBase->activeClient);
 
